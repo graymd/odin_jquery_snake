@@ -25,4 +25,8 @@ snake = {
   },
   snakeHead: '<div class="snakeHead">0</div>',
   snakeBody: '<div class="snakeBody">X</div>'
+  startingPosition: [20, 20],
+  initialDirection: 'r',
+  var currentSnake:
+
 }
