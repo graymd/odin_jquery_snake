@@ -1,6 +1,6 @@
 $('document').ready(function(){
   gameboard.render();
-
+  snake.render();
 });
 
 gameboard = {
@@ -8,7 +8,7 @@ gameboard = {
   setFullGrid: function(){
     for (var i=0; i<40; i++){
       for (var j=0; j<40; j++){
-      $('#gameboard').append(this.singleGrid);
+      $('#gameboard').append('<div class="gamesquare" id=y'+i+'x'+j+'></div>');
       }
     }
     $('#gameboard').append(snake.render());
@@ -16,17 +16,15 @@ gameboard = {
   render: function(){
     return this.setFullGrid();
   }
-
 }
 
 snake = {
   render: function(){
-    return this.snakeHead + this.snakeBody;
+    return $('#y20x20').replaceWith(this.snakeHead);
   },
-  snakeHead: '<div class="snakeHead">0</div>',
-  snakeBody: '<div class="snakeBody">X</div>'
+  snakeHead: '<div class="snakeHead gamesquare">0</div>',
+  snakeBody: '<div class="snakeBody">X</div>',
   startingPosition: [20, 20],
-  initialDirection: 'r',
-  var currentSnake:
-
+  initialDirection: 'r'
+  // var currentSnake:
 }
