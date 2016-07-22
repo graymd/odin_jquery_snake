@@ -1,0 +1,13 @@
+Head starting position will be [20,20]
+Body position will start at [20, 19]
+
+Body will start moving to the right.
+
+Head will become [20, 21]
+Body will become [20, 20]
+
+
+Body will always replace the piece in front of it
+
+
+If head goes [xx, 0] or great than [xx, 39]
