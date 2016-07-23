@@ -14,3 +14,6 @@ If head goes [xx, 0] or great than [xx, 39]
 
 
 current snake will need to be an array of arrays [[head], [body1], [body2]]
+
+
+///when you press direction button again it speeds up by number of presses

@@ -58,6 +58,7 @@ snake = {
     this.removeSnakeHead();
     this.startingPosition[0] -= 1;
     $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.checkInPlay();
     this.currentDirection = 'up';
     this.moveSnake();
   },
@@ -65,6 +66,7 @@ snake = {
     this.removeSnakeHead();
     this.startingPosition[1] += 1;
     $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.checkInPlay();
     this.currentDirection = 'right';
     this.moveSnake();
   },
@@ -72,6 +74,7 @@ snake = {
     this.removeSnakeHead();
     this.startingPosition[0] += 1;
     $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.checkInPlay();
     this.currentDirection = 'down';
     this.moveSnake();
   },
@@ -79,6 +82,7 @@ snake = {
     this.removeSnakeHead();
     this.startingPosition[1] -= 1;
     $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.checkInPlay();
     this.currentDirection = 'left';
     this.moveSnake();
   },
@@ -100,6 +104,12 @@ snake = {
       case 37: //left
         this.moveLeft();
         break;
+    }
+  },
+  checkInPlay(){
+    if (this.startingPosition[0] < 0 || this.startingPosition[0] > 39 || this.startingPosition[1] < 0 || this.startingPosition[1] > 39){
+      alert('game over!');
+      location.reload();
     }
   }
 }
