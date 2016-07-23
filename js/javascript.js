@@ -12,7 +12,7 @@ document.onkeydown = function(e) {
 
 gameboard = {
   singleGrid: '<div class="gamesquare"></div>',
-  setFullGrid: function(){
+  setFullGrid(){
     for (var i=0; i<40; i++){
       for (var j=0; j<40; j++){
       $('#gameboard').append('<div class="gamesquare" id='+i+'-'+j+'></div>');
@@ -20,10 +20,10 @@ gameboard = {
     }
     $('#gameboard').append(snake.render());
   },
-  render: function(){
+  render(){
     return this.setFullGrid();
   },
-  getPosition: function(positionArray) {
+  getPosition(positionArray) {
     'positionArray'
     return positionArray.join('-');
   },
@@ -33,7 +33,7 @@ gameboard = {
 snake = {
   headPosition: [20, 20],
   fullSnake: [[20, 20]],
-  render: function(){
+  render(){
     let [head, ...body] = this.fullSnake;
     console.log(head);
     console.log(body);
@@ -62,7 +62,7 @@ snake = {
     fullSnake.push(newSnakeBodyPartPosition);
   },
   currentDirection: '',
-  moveSnake: function(){
+  moveSnake(){
       setTimeout(function(){
         console.log(`moveSnake: ${snake.headPosition}`);
         if (snake.currentDirection === 'up'){
@@ -80,7 +80,7 @@ snake = {
       }, 2000);
   },
   moving: true,
-  moveUp: function(){
+  moveUp(){
     this.removeSnakeHead();
     this.headPosition[0] -= 1;
     $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
@@ -88,7 +88,7 @@ snake = {
     this.currentDirection = 'up';
     this.moveSnake();
   },
-  moveRight: function(){
+  moveRight(){
     this.removeSnakeHead();
     this.headPosition[1] += 1;
     $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
@@ -96,7 +96,7 @@ snake = {
     this.currentDirection = 'right';
     this.moveSnake();
   },
-  moveDown: function(){
+  moveDown(){
     this.removeSnakeHead();
     this.headPosition[0] += 1;
     $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
@@ -104,7 +104,7 @@ snake = {
     this.currentDirection = 'down';
     this.moveSnake();
   },
-  moveLeft: function(){
+  moveLeft(){
     this.removeSnakeHead();
     this.headPosition[1] -= 1;
     $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
@@ -112,11 +112,11 @@ snake = {
     this.currentDirection = 'left';
     this.moveSnake();
   },
-  removeSnakeHead: function(){
+  removeSnakeHead(){
     // 'removeSnakeHead';
     $("#"+gameboard.getPosition(this.headPosition)).removeClass('snakeHead');
   },
-  changeSnakeDirection: function(keypressed){
+  changeSnakeDirection(keypressed){
     switch (keypressed){
       case 38: //up
         if (this.currentDirection != 'up'){

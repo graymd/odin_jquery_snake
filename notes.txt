@@ -18,3 +18,6 @@ current snake will need to be an array of arrays [[head], [body1], [body2]]
 
 ///when you press direction button again it speeds up by number of presses
 ///gets choppy after a few direction presses
+
+
+every 2 seconds render is called.  render should decide what to do with the snake
