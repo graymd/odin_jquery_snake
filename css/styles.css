@@ -1,13 +1,15 @@
 #gameboard{
-  width: 880px;
+  width: 400px;
+  height: 400px;
 }
 
 .gamesquare, .snakeHead, .snakeBody{
-  height: 20px;
-  width: 20px;
-  background-color: blue;
+  height: 10px;
+  width: 10px;
+  outline: 1px solid;
+  background-color: white;
   display: inline-block;
-  margin: 1px;
+  float: left;
 }
 
 .snakeHead{

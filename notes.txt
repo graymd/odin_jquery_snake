@@ -11,3 +11,6 @@ Body will always replace the piece in front of it
 
 
 If head goes [xx, 0] or great than [xx, 39]
+
+
+current snake will need to be an array of arrays [[head], [body1], [body2]]

@@ -1,16 +1,12 @@
 $('document').ready(function(){
   gameboard.render();
   snake.render();
-  $('#searchbox input').bind('keypress', function(e) {
-    console.log(e);
-  });
 });
 
 document.onkeydown = function(e) {
     e = e || window.event;
     console.log(e.keyCode);
     snake.changeSnakeDirection(e.keyCode);
-
   }
 
 gameboard = {
@@ -39,19 +35,51 @@ snake = {
     'positionArray'
     return positionArray.join('-');
   },
-  moveSnake: function(direction){
-      setInterval(function(){
-        console.log(snake.startingPosition);
-        snake.moveRight();
+  moveSnake: function(){
+
+      setTimeout(function(){
+        console.log(`moveSnake: ${snake.startingPosition}`);
+        if (snake.currentDirection === 'up'){
+          snake.moveUp()
+        }
+        else if (snake.currentDirection === 'right'){
+          snake.moveRight()
+        }
+        else if (snake.currentDirection === 'down'){
+          snake.moveDown()
+        }
+        else if (snake.currentDirection === 'left'){
+          snake.moveLeft()
+        }
       }, 2000);
   },
   moving: true,
+  moveUp: function(){
+    this.removeSnakeHead();
+    this.startingPosition[0] -= 1;
+    $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.currentDirection = 'up';
+    this.moveSnake();
+  },
   moveRight: function(){
     this.removeSnakeHead();
     this.startingPosition[1] += 1;
-    this.startingPosition
     $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
-    console.log(this);
+    this.currentDirection = 'right';
+    this.moveSnake();
+  },
+  moveDown: function(){
+    this.removeSnakeHead();
+    this.startingPosition[0] += 1;
+    $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.currentDirection = 'down';
+    this.moveSnake();
+  },
+  moveLeft: function(){
+    this.removeSnakeHead();
+    this.startingPosition[1] -= 1;
+    $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.currentDirection = 'left';
     this.moveSnake();
   },
   removeSnakeHead: function(){
@@ -60,18 +88,18 @@ snake = {
   },
   changeSnakeDirection: function(keypressed){
     switch (keypressed){
-      // case 38: //up
-      //   this.moveUp();
-      //   break;
+      case 38: //up
+        this.moveUp();
+        break;
       case 39: //right
         this.moveRight();
         break;
-      // case 40 //down
-      //   this.moveDown();
-      //   break;
-      // case 37: //left
-      //   this.moveLeft();
-      //   break;
+      case 40: //down
+        this.moveDown();
+        break;
+      case 37: //left
+        this.moveLeft();
+        break;
     }
   }
 }
