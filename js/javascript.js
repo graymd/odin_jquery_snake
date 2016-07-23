@@ -1,7 +1,8 @@
 $('document').ready(function(){
   gameboard.render();
-  snake.render();
   food.render();
+  // snake.render();
+
 });
 
 document.onkeydown = function(e) {
@@ -18,32 +19,46 @@ gameboard = {
       $('#gameboard').append('<div class="gamesquare" id='+i+'-'+j+'></div>');
       }
     }
-    $('#gameboard').append(snake.render());
+    // $('#gameboard').append(snake.render());
   },
   render(){
-    return this.setFullGrid();
+    this.setFullGrid();
+    snake.render();
   },
   getPosition(positionArray) {
-    'positionArray'
     return positionArray.join('-');
   },
 
 }
 
 snake = {
-  headPosition: [20, 20],
   fullSnake: [[20, 20]],
   render(){
-    let [head, ...body] = this.fullSnake;
-    console.log(head);
-    console.log(body);
+    let [head, ...body] = snake.fullSnake;
+    this.checkInPlay(head);
+    snake.removeSnakeHead();
+    snake.removeSnakeBody();
     $("#"+gameboard.getPosition(head)).addClass('snakeHead');
-    for (let partPosition of body){
-      $("#"+gameboard.getPosition(partPosition)).addClass('snakeBody');
+    if(body){
+      for (let partPosition of body){
+        $("#"+gameboard.getPosition(partPosition)).addClass('snakeBody');
+      }
     }
-    // $("#"+this.bodyBuilder(this.headPosition)).replaceWith(this.snakeBody);
+    setTimeout(function(){
+      snake.moveSnakeBody();
+      snake.moveSnake(head);
+      console.log(head);
+      snake.render();
+    }, 2000);
   },
-
+  // moveSnakeBody(){
+  //   fullSnake = this.fullSnake;
+  //     if (fullSnake.length > 1) {
+  //     fullSnake.unshift(fullSnake[0]);
+  //     console.log(`full snake ${this.fullSnake[0]}`)
+  //     fullSnake.pop();
+  // }
+  },
   addSnakeBodyPiece(){
     let fullSnake = this.fullSnake;
     let newSnakeBodyPartPosition = [...fullSnake[fullSnake.length - 1]];
@@ -62,86 +77,57 @@ snake = {
     fullSnake.push(newSnakeBodyPartPosition);
   },
   currentDirection: '',
-  moveSnake(){
-      setTimeout(function(){
-        console.log(`moveSnake: ${snake.headPosition}`);
-        if (snake.currentDirection === 'up'){
-          snake.moveUp()
-        }
-        else if (snake.currentDirection === 'right'){
-          snake.moveRight()
-        }
-        else if (snake.currentDirection === 'down'){
-          snake.moveDown()
-        }
-        else if (snake.currentDirection === 'left'){
-          snake.moveLeft()
-        }
-      }, 2000);
+  moveSnake(head){
+      //should check if there is a new direction or same current directionßß
+      if (snake.currentDirection === 'up'){
+        snake.moveUp(head)
+      }
+      else if (snake.currentDirection === 'right'){
+        snake.moveRight(head)
+      }
+      else if (snake.currentDirection === 'down'){
+        snake.moveDown(head)
+      }
+      else if (snake.currentDirection === 'left'){
+        snake.moveLeft(head)
+      }
   },
-  moving: true,
-  moveUp(){
-    this.removeSnakeHead();
-    this.headPosition[0] -= 1;
-    $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
-    this.checkInPlay();
-    this.currentDirection = 'up';
-    this.moveSnake();
+  moveUp(head){
+    head[0] -= 1;
   },
-  moveRight(){
-    this.removeSnakeHead();
-    this.headPosition[1] += 1;
-    $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
-    this.checkInPlay();
-    this.currentDirection = 'right';
-    this.moveSnake();
+  moveRight(head){
+    head[1] += 1;
   },
-  moveDown(){
-    this.removeSnakeHead();
-    this.headPosition[0] += 1;
-    $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
-    this.checkInPlay();
-    this.currentDirection = 'down';
-    this.moveSnake();
+  moveDown(head){
+    head[0] += 1;
   },
-  moveLeft(){
-    this.removeSnakeHead();
-    this.headPosition[1] -= 1;
-    $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
-    this.checkInPlay();
-    this.currentDirection = 'left';
-    this.moveSnake();
+  moveLeft(head){
+    head[1] -= 1;
   },
   removeSnakeHead(){
-    // 'removeSnakeHead';
-    $("#"+gameboard.getPosition(this.headPosition)).removeClass('snakeHead');
+    $(".gamesquare").removeClass('snakeHead');
   },
-  changeSnakeDirection(keypressed){
-    switch (keypressed){
+  removeSnakeBody(){
+    $(".gamesquare").removeClass('snakeBody');
+  },
+  changeSnakeDirection(keyCode){
+    switch (keyCode){
       case 38: //up
-        if (this.currentDirection != 'up'){
-          this.moveUp();
-        }
+        this.currentDirection = 'up'
         break;
       case 39: //right
-        if (this.currentDirection != 'right'){
-          this.moveRight();
-        }
+        this.currentDirection = 'right'
         break;
       case 40: //down
-        if (this.currentDirection != 'down'){
-          this.moveDown();
-        }
+        this.currentDirection = 'down'
         break;
       case 37: //left
-        if (this.currentDirection != 'left'){
-          this.moveLeft();
-        }
+        this.currentDirection = 'left'
         break;
     }
   },
-  checkInPlay(){
-    if (this.headPosition[0] < 0 || this.headPosition[0] > 39 || this.headPosition[1] < 0 || this.headPosition[1] > 39){
+  checkInPlay(head){
+    if (head[0] < 0 || head[0] > 39 || head[1] < 0 || head[1] > 39){
       alert('game over!');
       location.reload();
     }
