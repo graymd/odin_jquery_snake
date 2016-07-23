@@ -1,6 +1,7 @@
 $('document').ready(function(){
   gameboard.render();
   snake.render();
+  food.render();
 });
 
 document.onkeydown = function(e) {
@@ -21,24 +22,49 @@ gameboard = {
   },
   render: function(){
     return this.setFullGrid();
-  }
-}
-
-snake = {
-  render: function(){
-    $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
-    // $("#"+this.bodyBuilder(this.startingPosition)).replaceWith(this.snakeBody);
   },
-  startingPosition: [20, 20],
-  currentDirection: '',
   getPosition: function(positionArray) {
     'positionArray'
     return positionArray.join('-');
   },
-  moveSnake: function(){
 
+}
+
+snake = {
+  headPosition: [20, 20],
+  fullSnake: [[20, 20]],
+  render: function(){
+    let [head, ...body] = this.fullSnake;
+    console.log(head);
+    console.log(body);
+    $("#"+gameboard.getPosition(head)).addClass('snakeHead');
+    for (let partPosition of body){
+      $("#"+gameboard.getPosition(partPosition)).addClass('snakeBody');
+    }
+    // $("#"+this.bodyBuilder(this.headPosition)).replaceWith(this.snakeBody);
+  },
+
+  addSnakeBodyPiece(){
+    let fullSnake = this.fullSnake;
+    let newSnakeBodyPartPosition = [...fullSnake[fullSnake.length - 1]];
+    if (this.currentDirection === 'up'){
+      newSnakeBodyPartPosition[0] +=1;
+    }
+    else if (this.currentDirection === 'right'){
+      newSnakeBodyPartPosition[1] -=1;
+    }
+    else if (this.currentDirection === 'down'){
+      newSnakeBodyPartPosition[0] -=1;
+    }
+    else if (this.currentDirection === 'left'){
+      newSnakeBodyPartPosition[1] +=1;
+    }
+    fullSnake.push(newSnakeBodyPartPosition);
+  },
+  currentDirection: '',
+  moveSnake: function(){
       setTimeout(function(){
-        console.log(`moveSnake: ${snake.startingPosition}`);
+        console.log(`moveSnake: ${snake.headPosition}`);
         if (snake.currentDirection === 'up'){
           snake.moveUp()
         }
@@ -56,60 +82,84 @@ snake = {
   moving: true,
   moveUp: function(){
     this.removeSnakeHead();
-    this.startingPosition[0] -= 1;
-    $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.headPosition[0] -= 1;
+    $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
     this.checkInPlay();
     this.currentDirection = 'up';
     this.moveSnake();
   },
   moveRight: function(){
     this.removeSnakeHead();
-    this.startingPosition[1] += 1;
-    $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.headPosition[1] += 1;
+    $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
     this.checkInPlay();
     this.currentDirection = 'right';
     this.moveSnake();
   },
   moveDown: function(){
     this.removeSnakeHead();
-    this.startingPosition[0] += 1;
-    $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.headPosition[0] += 1;
+    $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
     this.checkInPlay();
     this.currentDirection = 'down';
     this.moveSnake();
   },
   moveLeft: function(){
     this.removeSnakeHead();
-    this.startingPosition[1] -= 1;
-    $("#"+this.getPosition(this.startingPosition)).addClass('snakeHead');
+    this.headPosition[1] -= 1;
+    $("#"+gameboard.getPosition(this.headPosition)).addClass('snakeHead');
     this.checkInPlay();
     this.currentDirection = 'left';
     this.moveSnake();
   },
   removeSnakeHead: function(){
     // 'removeSnakeHead';
-    $("#"+this.getPosition(this.startingPosition)).removeClass('snakeHead');
+    $("#"+gameboard.getPosition(this.headPosition)).removeClass('snakeHead');
   },
   changeSnakeDirection: function(keypressed){
     switch (keypressed){
       case 38: //up
-        this.moveUp();
+        if (this.currentDirection != 'up'){
+          this.moveUp();
+        }
         break;
       case 39: //right
-        this.moveRight();
+        if (this.currentDirection != 'right'){
+          this.moveRight();
+        }
         break;
       case 40: //down
-        this.moveDown();
+        if (this.currentDirection != 'down'){
+          this.moveDown();
+        }
         break;
       case 37: //left
-        this.moveLeft();
+        if (this.currentDirection != 'left'){
+          this.moveLeft();
+        }
         break;
     }
   },
   checkInPlay(){
-    if (this.startingPosition[0] < 0 || this.startingPosition[0] > 39 || this.startingPosition[1] < 0 || this.startingPosition[1] > 39){
+    if (this.headPosition[0] < 0 || this.headPosition[0] > 39 || this.headPosition[1] < 0 || this.headPosition[1] > 39){
       alert('game over!');
       location.reload();
     }
   }
+}
+
+food = {
+  render(){
+    this.setPosition();
+    $("#"+gameboard.getPosition(this.position)).addClass('food');
+  },
+  setPosition(){
+    this.position[0] = getRandomIntInclusive(0, 39);
+    this.position[1] = getRandomIntInclusive(0, 39);
+  },
+  position: [],
+}
+
+function getRandomIntInclusive(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
