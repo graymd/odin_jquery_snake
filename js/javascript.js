@@ -38,6 +38,7 @@ snake = {
     this.checkInPlay(head);
     snake.removeSnakeHead();
     snake.removeSnakeBody();
+    console.log(this.fullSnake);
     $("#"+gameboard.getPosition(head)).addClass('snakeHead');
     if(body){
       for (let partPosition of body){
@@ -45,27 +46,35 @@ snake = {
       }
     }
     setTimeout(function(){
-      snake.moveSnakeBody();
+      // snake.moveSnakeBody();
       snake.moveSnake(head);
       console.log(head);
       snake.render();
     }, 2000);
   },
   // moveSnakeBody(){
-  //   fullSnake = this.fullSnake;
-  //     if (fullSnake.length > 1) {
-  //     fullSnake.unshift(fullSnake[0]);
-  //     console.log(`full snake ${this.fullSnake[0]}`)
-  //     fullSnake.pop();
-  // }
-  },
+    // let fullSnake = this.fullSnake;
+    // let tmpFullSnake = [...fullSnake];
+    //   if (tmpFullSnake.length > 1 && this.currentDirection != '') {
+    //     let len = tmpFullSnake.length;
+    //     for (let i = len - 1; i > 0; i--){
+    //       console.log(`fullSnake: ${tmpFullSnake}`)
+    //       tmpFullSnake[i] = tmpFullSnake[i - 1];
+    //       console.log(`fullSnake: ${tmpFullSnake}`)
+    //     }
+    //     this.fullSnake = tmpFullSnake;
+      // fullSnake.unshift(fullSnake[0]);
+      // console.log(`full snake ${this.fullSnake[0]}`)
+      // fullSnake.pop();
+  //   }
+  // },
   addSnakeBodyPiece(){
     let fullSnake = this.fullSnake;
     let newSnakeBodyPartPosition = [...fullSnake[fullSnake.length - 1]];
     if (this.currentDirection === 'up'){
       newSnakeBodyPartPosition[0] +=1;
     }
-    else if (this.currentDirection === 'right'){
+    else if (this.currentDirection === 'right' || this.currentDirection === ''){
       newSnakeBodyPartPosition[1] -=1;
     }
     else if (this.currentDirection === 'down'){
@@ -77,32 +86,46 @@ snake = {
     fullSnake.push(newSnakeBodyPartPosition);
   },
   currentDirection: '',
-  moveSnake(head){
+  moveSnake(){
       //should check if there is a new direction or same current directionßß
+      // this.moveSnakeBody();
       if (snake.currentDirection === 'up'){
-        snake.moveUp(head)
+        snake.moveUp()
       }
       else if (snake.currentDirection === 'right'){
-        snake.moveRight(head)
+        snake.moveRight()
       }
       else if (snake.currentDirection === 'down'){
-        snake.moveDown(head)
+        snake.moveDown()
       }
       else if (snake.currentDirection === 'left'){
-        snake.moveLeft(head)
+        snake.moveLeft()
       }
+
   },
-  moveUp(head){
-    head[0] -= 1;
+  moveUp(){
+    let snakeHead = [...this.fullSnake[0]];
+    snakeHead[0] -= 1;
+    this.fullSnake.unshift(snakeHead);
+    this.fullSnake.pop();
   },
-  moveRight(head){
-    head[1] += 1;
+  moveRight(){
+    let snakeHead = [...this.fullSnake[0]];
+    snakeHead[1] += 1;
+    this.fullSnake.unshift(snakeHead);
+    this.fullSnake.pop();
   },
-  moveDown(head){
-    head[0] += 1;
+  moveDown(){
+    let snakeHead = [...this.fullSnake[0]];
+    snakeHead[0] += 1;
+    this.fullSnake.unshift(snakeHead);
+    this.fullSnake.pop();
   },
-  moveLeft(head){
-    head[1] -= 1;
+  moveLeft(){
+    let snakeHead = [...this.fullSnake[0]];
+    snakeHead[1] -= 1;
+    this.fullSnake.unshift(snakeHead);
+    this.fullSnake.pop();
   },
   removeSnakeHead(){
     $(".gamesquare").removeClass('snakeHead');
