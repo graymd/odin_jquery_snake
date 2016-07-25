@@ -38,7 +38,7 @@ snake = {
     this.checkInPlay(head);
     snake.removeSnakeHead();
     snake.removeSnakeBody();
-    console.log(this.fullSnake);
+    // console.log(this.fullSnake);
     $("#"+gameboard.getPosition(head)).addClass('snakeHead');
     if(body){
       for (let partPosition of body){
@@ -47,8 +47,9 @@ snake = {
     }
     setTimeout(function(){
       // snake.moveSnakeBody();
+      snakeGrower.growSnake();
       snake.moveSnake(head);
-      console.log(head);
+      // console.log(head);
       snake.render();
     }, 2000);
   },
@@ -163,12 +164,40 @@ food = {
     $("#"+gameboard.getPosition(this.position)).addClass('food');
   },
   setPosition(){
-    this.position[0] = getRandomIntInclusive(0, 39);
-    this.position[1] = getRandomIntInclusive(0, 39);
+    this.position[0] = 20//getRandomIntInclusive(0, 39);
+    this.position[1] = 22//getRandomIntInclusive(0, 39);
   },
   position: [],
 }
 
 function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+snakeGrower = {
+  // checkToGrow(){
+  //   console.log('here')
+  //   ;
+  // },
+  growSnake(){
+    if (testArrayIncluded2dArray(snake.fullSnake, food.position)){
+      console.log('adding');
+      snake.addSnakeBodyPiece();
+    }
+  }
+}
+
+
+testArrayIncluded2dArray = function(array, testElement){
+  console.log('here again');
+  console.log(`array: ${array}`);
+  console.log(`testElement: ${testElement}`);
+  tester = false;
+  for (let el of array){
+    if(el[0] === testElement[0] && el[1] === testElement[1]){
+      tester = true;
+    }
+  }
+  console.log(`tester ${tester}`);
+  return tester;
 }
