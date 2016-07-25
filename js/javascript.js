@@ -51,7 +51,7 @@ snake = {
       snake.moveSnake(head);
       // console.log(head);
       snake.render();
-    }, 2000);
+    }, 500);
   },
   // moveSnakeBody(){
     // let fullSnake = this.fullSnake;
@@ -164,10 +164,17 @@ food = {
     $("#"+gameboard.getPosition(this.position)).addClass('food');
   },
   setPosition(){
-    this.position[0] = 20//getRandomIntInclusive(0, 39);
-    this.position[1] = 22//getRandomIntInclusive(0, 39);
+    this.position[0] = getRandomIntInclusive(0, 39);
+    this.position[1] = getRandomIntInclusive(0, 39);
   },
   position: [],
+  removeFood(){
+    $("#"+gameboard.getPosition(this.position)).removeClass('food');
+  },
+  resetFood(){
+    this.removeFood();
+    this.render();
+  }
 }
 
 function getRandomIntInclusive(min, max) {
@@ -175,14 +182,10 @@ function getRandomIntInclusive(min, max) {
 }
 
 snakeGrower = {
-  // checkToGrow(){
-  //   console.log('here')
-  //   ;
-  // },
   growSnake(){
     if (testArrayIncluded2dArray(snake.fullSnake, food.position)){
-      console.log('adding');
       snake.addSnakeBodyPiece();
+      food.resetFood();
     }
   }
 }
