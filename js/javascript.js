@@ -155,7 +155,8 @@ snake = {
       alert('game over!');
       location.reload();
     }
-  }
+  },
+
 }
 
 food = {
@@ -174,7 +175,7 @@ food = {
   resetFood(){
     this.removeFood();
     this.render();
-  }
+  },
 }
 
 function getRandomIntInclusive(min, max) {
@@ -187,20 +188,16 @@ snakeGrower = {
       snake.addSnakeBodyPiece();
       food.resetFood();
     }
-  }
+  },
 }
 
 
 testArrayIncluded2dArray = function(array, testElement){
-  console.log('here again');
-  console.log(`array: ${array}`);
-  console.log(`testElement: ${testElement}`);
   tester = false;
   for (let el of array){
     if(el[0] === testElement[0] && el[1] === testElement[1]){
       tester = true;
     }
   }
-  console.log(`tester ${tester}`);
   return tester;
 }

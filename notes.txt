@@ -1,3 +1,10 @@
+remove food once snakehead is on same square
+add check if snake is back on itself
+add score keeper
+speed the game up
+
+
+
 Head starting position will be [20,20]
 Body position will start at [20, 19]
 
