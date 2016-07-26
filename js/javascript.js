@@ -1,15 +1,12 @@
 $('document').ready(function(){
   gameboard.render();
-  food.render();
-  // snake.render();
-
 });
 
 document.onkeydown = function(e) {
-    e = e || window.event;
-    console.log(e.keyCode);
-    snake.changeSnakeDirection(e.keyCode);
-  }
+  e = e || window.event;
+  console.log(e.keyCode);
+  snake.changeSnakeDirection(e.keyCode);
+}
 
 gameboard = {
   singleGrid: '<div class="gamesquare"></div>',
@@ -19,16 +16,19 @@ gameboard = {
       $('#gameboard').append('<div class="gamesquare" id='+i+'-'+j+'></div>');
       }
     }
-    // $('#gameboard').append(snake.render());
   },
   render(){
     this.setFullGrid();
     snake.render();
+    food.render();
   },
   getPosition(positionArray) {
     return positionArray.join('-');
   },
-
+  resetGame(){
+    alert('game over!');
+    location.reload();
+  },
 }
 
 snake = {
@@ -38,7 +38,6 @@ snake = {
     this.checkInPlay(head);
     snake.removeSnakeHead();
     snake.removeSnakeBody();
-    // console.log(this.fullSnake);
     $("#"+gameboard.getPosition(head)).addClass('snakeHead');
     if(body){
       for (let partPosition of body){
@@ -46,29 +45,11 @@ snake = {
       }
     }
     setTimeout(function(){
-      // snake.moveSnakeBody();
       snakeGrower.growSnake();
-      snake.moveSnake(head);
-      // console.log(head);
+      snake.moveSnake();
       snake.render();
-    }, 500);
+    }, 100);
   },
-  // moveSnakeBody(){
-    // let fullSnake = this.fullSnake;
-    // let tmpFullSnake = [...fullSnake];
-    //   if (tmpFullSnake.length > 1 && this.currentDirection != '') {
-    //     let len = tmpFullSnake.length;
-    //     for (let i = len - 1; i > 0; i--){
-    //       console.log(`fullSnake: ${tmpFullSnake}`)
-    //       tmpFullSnake[i] = tmpFullSnake[i - 1];
-    //       console.log(`fullSnake: ${tmpFullSnake}`)
-    //     }
-    //     this.fullSnake = tmpFullSnake;
-      // fullSnake.unshift(fullSnake[0]);
-      // console.log(`full snake ${this.fullSnake[0]}`)
-      // fullSnake.pop();
-  //   }
-  // },
   addSnakeBodyPiece(){
     let fullSnake = this.fullSnake;
     let newSnakeBodyPartPosition = [...fullSnake[fullSnake.length - 1]];
@@ -88,8 +69,6 @@ snake = {
   },
   currentDirection: '',
   moveSnake(){
-      //should check if there is a new direction or same current directionßß
-      // this.moveSnakeBody();
       if (snake.currentDirection === 'up'){
         snake.moveUp()
       }
@@ -108,25 +87,38 @@ snake = {
     let snakeHead = [...this.fullSnake[0]];
     snakeHead[0] -= 1;
     this.fullSnake.unshift(snakeHead);
+    this.checkSnakeOnSelf();
     this.fullSnake.pop();
+
   },
   moveRight(){
     let snakeHead = [...this.fullSnake[0]];
     snakeHead[1] += 1;
     this.fullSnake.unshift(snakeHead);
+    this.checkSnakeOnSelf();
     this.fullSnake.pop();
   },
   moveDown(){
     let snakeHead = [...this.fullSnake[0]];
     snakeHead[0] += 1;
     this.fullSnake.unshift(snakeHead);
+    this.checkSnakeOnSelf();
     this.fullSnake.pop();
   },
   moveLeft(){
     let snakeHead = [...this.fullSnake[0]];
     snakeHead[1] -= 1;
     this.fullSnake.unshift(snakeHead);
+    this.checkSnakeOnSelf();
     this.fullSnake.pop();
+  },
+  checkSnakeOnSelf(){
+    if (this.fullSnake.length > 1){
+      let [head, ...body] = this.fullSnake;
+        if(testArrayIncluded2dArray(body, head)){
+        gameboard.resetGame();
+      }
+    }
   },
   removeSnakeHead(){
     $(".gamesquare").removeClass('snakeHead');
@@ -152,11 +144,9 @@ snake = {
   },
   checkInPlay(head){
     if (head[0] < 0 || head[0] > 39 || head[1] < 0 || head[1] > 39){
-      alert('game over!');
-      location.reload();
+      gameboard.resetGame();
     }
   },
-
 }
 
 food = {
@@ -191,13 +181,12 @@ snakeGrower = {
   },
 }
 
-
 testArrayIncluded2dArray = function(array, testElement){
-  tester = false;
   for (let el of array){
     if(el[0] === testElement[0] && el[1] === testElement[1]){
-      tester = true;
+      console.log(`equals`);
+      return true;
     }
   }
-  return tester;
+  return false;
 }
